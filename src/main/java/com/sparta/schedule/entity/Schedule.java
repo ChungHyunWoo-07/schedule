@@ -17,4 +17,9 @@ public class Schedule {
         this.username = requesDto.getUsername();
         this.contents = requesDto.getContents();
     }
+
+    public void update(ScheduleRequesDto requesDto) {
+        this.username = requesDto.getUsername();
+        this.contents = requesDto.getContents();
+    }
 }

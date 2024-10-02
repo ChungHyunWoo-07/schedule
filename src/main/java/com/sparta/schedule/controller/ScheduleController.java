@@ -41,7 +41,33 @@ public class ScheduleController {
         return responseList;
     }
 
+    @PutMapping("/schedules/{id}") //스케줄 업데이트
+    //@PathVariable로 업데이트 할 id 받아오고, 수정 할 내용을 @RequestBody로 받아옴
+    public Long updateSchedule(@PathVariable Long id, @RequestBody ScheduleRequesDto requesDto) {
+        //해당 스케줄이 DB에 존재하는지 확인
+        if (scheduleList.containsKey(id)) {
+            //해당 스케줄 가져오기
+            Schedule schedule = scheduleList.get(id);
 
+            // 스케줄 수정
+            schedule.update(requesDto);
+            return schedule.getId();
+        } else {
+            throw new IllegalArgumentException("선택한 메모는 존재하지 않습니다.");
+        }
+
+    }
+    @DeleteMapping("/schedules/{id}")
+    public Long deleteSchedule(@PathVariable Long id) {
+        //해당 스케줄이 DB에 존재하는지 확인
+        if(scheduleList.containsKey(id)){
+            // 해당 스케줄 삭제하기
+            scheduleList.remove(id);
+            return id;
+        } else {
+            throw new IllegalArgumentException("선택한 메모는 존재하지 않습니다.");
+        }
+    }
 
 
 
