@@ -14,7 +14,7 @@ public class DB { // DB연동 클래스
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(url, id, pass);
     }
-
+    // 데이터 베이스에 연동 되어있음
     public void create(Schedule schedule) throws SQLException { //sql, DB연동
         String sql = "INSERT INTO schedules (username, contents) VALUES (?, ?)";
         try (

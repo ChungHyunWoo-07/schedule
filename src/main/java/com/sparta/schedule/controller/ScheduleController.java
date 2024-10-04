@@ -1,21 +1,18 @@
 package com.sparta.schedule.controller;
 
 
-import com.sparta.schedule.db.DB;
+
 import com.sparta.schedule.dto.ScheduleRequesDto;
 import com.sparta.schedule.dto.ScheduleResponseDto;
 import com.sparta.schedule.service.ScheduleService;
-import lombok.SneakyThrows;
 import org.springframework.web.bind.annotation.*;
-import com.sparta.schedule.entity.Schedule;
 
-import java.sql.*;
 import java.util.*;
 
 
 @RestController
 @RequestMapping("/api/schedules")
-public class ScheduleController {
+public class ScheduleController {  //입력 받는 것
 
 
     private final ScheduleService scheduleService;  //객체 생성

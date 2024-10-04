@@ -1,37 +1,32 @@
 package com.sparta.schedule.service;
 
+import com.sparta.schedule.db.DB;
 import com.sparta.schedule.dto.ScheduleRequesDto;
 import com.sparta.schedule.dto.ScheduleResponseDto;
 import com.sparta.schedule.entity.Schedule;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.sql.SQLException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Component //빈 객체
+
+@Service
 public class ScheduleService {
 
     private static final Map<Long, Schedule> scheduleList = new HashMap<>();
+    private final DB db = new DB();
 
-    public static ScheduleResponseDto creatSchedule(ScheduleRequesDto requestDto) {
+    public void creat(ScheduleRequesDto requestDto) throws SQLException {
         //RequesDto -> Entity
-        Schedule schedule = new Schedule(requestDto);
+        Schedule schedule = new Schedule(null, requestDto.getContents(), requestDto.getUsername());
+        db.create(schedule);
 
-        //Schedule Max ID Check
-        //Map의 키 값인 Long의 가장 큰 값을 가져와서 keySet에 넣음
-        Long maxId = scheduleList.size() > 0 ? Collections.max(scheduleList.keySet()) + 1 : 1;
-        schedule.setId(maxId);
-
-        //DB저장
-        scheduleList.put(schedule.getId(), schedule); // 키에는 아이디를 벨류에는 위에서 만든 스케줄 객체를 넣음
-
-        //Entity -> ResponseDto
-        ScheduleResponseDto scheduleResponseDto = new ScheduleResponseDto(schedule);
-        return scheduleResponseDto;
     }
 
     public List<ScheduleResponseDto> getSchedule() {
@@ -42,7 +37,7 @@ public class ScheduleService {
         return responseList;
     }
 
-    public Long updateSchedule(@PathVariable Long id, @RequestBody ScheduleRequesDto requesDto) {
+    public Long update(@PathVariable Long id, @RequestBody ScheduleRequesDto requesDto) {
         //해당 스케줄이 DB에 존재하는지 확인
         if (scheduleList.containsKey(id)) {
             //해당 스케줄 가져오기
