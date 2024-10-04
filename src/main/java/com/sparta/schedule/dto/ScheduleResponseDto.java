@@ -14,5 +14,12 @@ public class ScheduleResponseDto {
         this.username = schedule.getUsername();
         this.contents = schedule.getContents();
     }
+
+
+    public ScheduleResponseDto(Long id, String username, String contents) {
+        this.id = id;
+        this.username = username;
+        this.contents = contents;
+    }
 }
 
