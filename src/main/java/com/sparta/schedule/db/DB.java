@@ -1,7 +1,9 @@
 package com.sparta.schedule.db;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import com.sparta.schedule.entity.Schedule;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class DB { // DB연동 클래스
@@ -13,4 +15,51 @@ public class DB { // DB연동 클래스
         return DriverManager.getConnection(url, id, pass);
     }
 
+    public void create(Schedule schedule) throws SQLException { //sql, DB연동
+        String sql = "INSERT INTO schedules (username, contents) VALUES (?, ?)";
+        try (
+                Connection conn = getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, schedule.getUsername());
+            pstmt.setString(2, schedule.getContents());
+            pstmt.executeUpdate();
+        }
+    }
+    public List<Schedule> read () throws SQLException { //sql, DB연동
+        List<Schedule> scheduleList = new ArrayList<>();
+        String sql = "SELECT * FROM schedules";
+        try (
+                Connection conn = getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+                ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                Schedule schedule = new Schedule(
+                        rs.getLong("id"),
+                        rs.getString("username"),
+                        rs.getString("contents")
+                );
+                scheduleList.add(schedule);
+            }
+        }
+        return scheduleList;
+    }
+    public void update (Schedule schedule) throws SQLException { //sql, DB연동
+        String sql = "UPDATE schedules SET contents = ? WHERE username = ?";
+        try (
+                Connection conn = getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, schedule.getUsername());
+            pstmt.setString(2, schedule.getContents());
+            pstmt.executeUpdate();
+        }
+    }
+    public void delete (Schedule schedule) throws SQLException { //sql, DB연동
+        String sql = "DELETE FROM schedules WHERE username = ?";
+        try (
+                Connection conn = getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, schedule.getUsername());
+            pstmt.executeUpdate();
+        }
+    }
 }

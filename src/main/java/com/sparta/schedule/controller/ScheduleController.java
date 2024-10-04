@@ -17,16 +17,6 @@ import java.util.*;
 @RequestMapping("/api/schedules")
 public class ScheduleController {
 
-    @SneakyThrows
-    public void db(Schedule schedule) { //sql, DB연동
-        String sql = "INSERT INTO schedules (getUsername, getContents) VALUES (?, ?)";
-        try (
-                Connection conn = DB.getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, schedule.getUsername());
-            pstmt.setString(2, schedule.getContents());
-        }
-    }
 
     private final ScheduleService scheduleService;  //객체 생성
 
