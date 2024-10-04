@@ -44,7 +44,7 @@ public class DB { // DB연동 클래스
         return scheduleList;
     }
     public void update (Schedule schedule) throws SQLException { //sql, DB연동
-        String sql = "UPDATE schedules SET contents = ? WHERE username = ?";
+        String sql = "UPDATE schedules SET contents = ?, username = ? WHERE id = ?";
         try (
                 Connection conn = getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -53,12 +53,12 @@ public class DB { // DB연동 클래스
             pstmt.executeUpdate();
         }
     }
-    public void delete (Schedule schedule) throws SQLException { //sql, DB연동
-        String sql = "DELETE FROM schedules WHERE username = ?";
+    public void delete (Long id) throws SQLException { //sql, DB연동
+        String sql = "DELETE FROM schedules WHERE id = ?";
         try (
                 Connection conn = getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, schedule.getUsername());
+            pstmt.setLong(1, id);
             pstmt.executeUpdate();
         }
     }
